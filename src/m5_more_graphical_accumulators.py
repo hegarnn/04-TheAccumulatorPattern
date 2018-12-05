@@ -9,8 +9,8 @@ Additionally, it emphasizes that you must
 before you can implement a solution to the problem in Python. 
   
 Authors: David Mutchler, Vibha Alangar, Matt Boutell, Dave Fisher, Mark Hays,
-         Aaron Wilkin, their colleagues, and PUT_YOUR_NAME_HERE.
-"""  # TODO: 1. PUT YOUR NAME IN THE ABOVE LINE.
+         Aaron Wilkin, their colleagues, and Nasser Hegar.
+"""  # DONE: 1. PUT YOUR NAME IN THE ABOVE LINE.
 
 import rosegraphics as rg
 
@@ -98,7 +98,7 @@ def draw_squares_from_circle(n, circle, window):
       :type window: rg.RoseWindow
     """
     # -------------------------------------------------------------------------
-    # TODO: 2. Implement and test this function.
+    # DONE: 2. Implement and test this function.
     #          Tests have been written for you (above).
     #
     # CONSIDER using the ACCUMULATOR IN GRAPHICS pattern,
@@ -111,6 +111,23 @@ def draw_squares_from_circle(n, circle, window):
     #          ** FIRST DO A CONCRETE EXAMPLE BY HAND! **
     ###########################################################################
     # -------------------------------------------------------------------------
+
+    point1 = rg.Point(circle.center.x - circle.radius, circle.center.y - circle.radius)
+    point2 = rg.Point(circle.center.x + circle.radius, circle.center.y + circle.radius)
+
+    square = rg.Square(circle.center,circle.radius * 2)
+
+    square.attach_to(window)
+    circle.attach_to(window)
+
+    for k in range(n+1):
+        square = rg.Square(rg.Point(square.center.x + circle.radius, square.center.y + circle.radius), circle.radius * 2)
+        square.attach_to(window)
+
+
+    window.render()
+
+
 
 
 def run_test_draw_circles_from_rectangle():
@@ -134,6 +151,14 @@ def run_test_draw_circles_from_rectangle():
     #   Follow the same form as the example in a previous problem.
     ###########################################################################
     # -------------------------------------------------------------------------
+
+    corner1 = rg.Point(100, 80)
+    corner2 = rg.Point(200, 200)
+
+    rectangle = rg.Rectangle(corner1,corner2)
+
+    rectangle.fill_color = 'green'
+    
 
 
 def draw_circles_from_rectangle(m, n, rectangle, window):
@@ -189,6 +214,21 @@ def draw_circles_from_rectangle(m, n, rectangle, window):
     #          ** FIRST DO A CONCRETE EXAMPLE BY HAND! **
     ###########################################################################
     # -------------------------------------------------------------------------
+
+
+
+    circle = rg.Circle(rectangle.get_center(),(rectangle.corner_1.y + rectangle.corner_2.y)/2)
+
+    rectangle.attach_to(window)
+    circle.attach_to(window)
+
+    for k in range(n+1):
+        square = rg.Square(rg.Point(square.center.x + circle.radius, square.center.y + circle.radius), circle.radius * 2)
+        square.attach_to(window)
+
+
+    window.render()
+
 
 
 def run_test_draw_lines_from_rectangles():
