@@ -27,8 +27,8 @@ import rosegraphics as rg
 # -----------------------------------------------------------------------------
 def main():
     """ Calls the   TEST   functions in this module. """
-    run_test_draw_squares_from_circle()
-    run_test_draw_circles_from_rectangle()
+    #run_test_draw_squares_from_circle()
+    #run_test_draw_circles_from_rectangle()
     run_test_draw_lines_from_rectangles()
 
 
@@ -139,7 +139,7 @@ def run_test_draw_circles_from_rectangle():
     print('--------------------------------------------------')
 
     # -------------------------------------------------------------------------
-    # TODO: 3. Implement this TEST function.
+    # DONE: 3. Implement this TEST function.
     #   It TESTS the  draw_circles_from_rectangle  function
     #   defined below.  Include at least **   3   ** tests, of which
     #      ***  at least TWO tests are on ONE window and
@@ -151,14 +151,46 @@ def run_test_draw_circles_from_rectangle():
     #   Follow the same form as the example in a previous problem.
     ###########################################################################
     # -------------------------------------------------------------------------
+    width = 2000
+    height = 2000
+    window = rg.RoseWindow(width, height)
 
-    corner1 = rg.Point(100, 80)
-    corner2 = rg.Point(200, 200)
+    corner1 = rg.Point(550, 600)
+    corner2 = rg.Point(600, 700)
 
     rectangle = rg.Rectangle(corner1,corner2)
-
     rectangle.fill_color = 'green'
-    
+    rectangle.outline_thickness = 5
+
+    draw_circles_from_rectangle(3,2,rectangle,window)
+
+
+
+    corner1 = rg.Point(750, 700)
+    corner2 = rg.Point(800, 800)
+
+    rectangle = rg.Rectangle(corner1, corner2)
+    rectangle.fill_color = 'red'
+    rectangle.outline_thickness = 5
+
+    draw_circles_from_rectangle(3,5,rectangle,window)
+
+    window.close_on_mouse_click()
+
+
+    window2 = rg.RoseWindow(width,height)
+
+    corner1 = rg.Point(800, 750)
+    corner2 = rg.Point(890, 800)
+
+    rectangle = rg.Rectangle(corner1, corner2)
+    rectangle.fill_color = 'blue'
+    rectangle.outline_thickness = 5
+
+    draw_circles_from_rectangle(3, 5, rectangle, window2)
+
+    window2.close_on_mouse_click()
+
 
 
 def draw_circles_from_rectangle(m, n, rectangle, window):
@@ -201,7 +233,7 @@ def draw_circles_from_rectangle(m, n, rectangle, window):
       :type window: rg.RoseWindow
     """
     # -------------------------------------------------------------------------
-    # TODO: 4. Implement and test this function.
+    # DONE: 4. Implement and test this function.
     #          Tests have been written for you (above).
     #
     # CONSIDER using the ACCUMULATOR IN GRAPHICS pattern,
@@ -215,19 +247,32 @@ def draw_circles_from_rectangle(m, n, rectangle, window):
     ###########################################################################
     # -------------------------------------------------------------------------
 
+    xradius = (rectangle.corner_2.x - rectangle.corner_1.x)/2
+    yradius = (rectangle.corner_2.y - rectangle.corner_1.y)/2
 
 
-    circle = rg.Circle(rectangle.get_center(),(rectangle.corner_1.y + rectangle.corner_2.y)/2)
+    circlex = rg.Circle(rg.Point(rectangle.corner_1.x - yradius, rectangle.get_center().y),(yradius))
+    circlex.fill_color = rectangle.fill_color
+
+    circley = rg.Circle(rg.Point(rectangle.get_center().x, rectangle.corner_1.y - xradius),(xradius))
 
     rectangle.attach_to(window)
-    circle.attach_to(window)
+    circlex.attach_to(window)
+    circley.attach_to(window)
 
-    for k in range(n+1):
-        square = rg.Square(rg.Point(square.center.x + circle.radius, square.center.y + circle.radius), circle.radius * 2)
-        square.attach_to(window)
+    for k in range(m-1):
+        circlex = rg.Circle(rg.Point(circlex.center.x - (2 * circlex.radius),circlex.center.y), circlex.radius)
+        circlex.fill_color = rectangle.fill_color
+        circlex.attach_to(window)
+
+    for _ in range(n-1):
+        circley = rg.Circle(rg.Point(rectangle.get_center().x, circley.center.y - (2 * circley.radius)), circley.radius)
+        circley.attach_to(window)
 
 
     window.render()
+
+
 
 
 
@@ -321,6 +366,29 @@ def draw_lines_from_rectangles(rectangle1, rectangle2, n, window):
     #          ** FIRST DO A CONCRETE EXAMPLE BY HAND! **
     ###########################################################################
     # -------------------------------------------------------------------------
+
+    rectangle1.attach_to(window)
+    rectangle2.attach_to(window)
+
+    xradius = (abs(rectangle1.corner_2.x - rectangle1.corner_1.x))/2
+    yradius = (abs(rectangle1.corner_2.y - rectangle1.corner_1.y))/2
+
+    line = rg.Line(rg.Point(rectangle1.get_center().x,rectangle1.get_center().y),rg.Point(rectangle2.get_center().x,rectangle2.get_center().y))
+    line.color = rectangle1.outline_color
+    line.thickness = 5
+
+    for k in range(n):
+        line.attach_to(window)
+        line = rg.Line(rg.Point(line.start.x - xradius, line.start.y + yradius),rg.Point(line.end.x - xradius, line.end.y + yradius))
+
+        if (k%2 == 0):
+            line.color = rectangle2.outline_color
+        else:
+            line.color = rectangle1.outline_color
+
+        line.thickness = 5
+
+    window.render()
 
 
 # -----------------------------------------------------------------------------
